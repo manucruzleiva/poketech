@@ -1,0 +1,17 @@
+version: 1.0
+runtime: nodejs16
+build:
+  commands:
+    pre-build:
+      - curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+      - apt-get install -y nodejs
+      - npm install -g yarn
+    build:
+      - flutter pub get
+      - flutter build web
+run:
+  runtime-version: nodejs16
+  command: nginx -g "daemon off;"
+  network:
+    port: 80
+    env: PORT
