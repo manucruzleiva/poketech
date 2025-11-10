@@ -1,33 +1,29 @@
 version: 1.0
 runtime: python3
-
 build:
   commands:
-    pre-build:
-      - pip install --upgrade pip
     build:
-      - pip install -r backend/requirements.txt
-
+      - cd backend && pip install -r requirements.txt
 run:
-  command: cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8080
+  runtime-version: 3.10
+  command: cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8080
   network:
     port: 8080
   env:
-    - name: PYTHON_VERSION
-      value: "3.10"
-  network:
-    port: 8080
-  env:
-    - name: database-url
+    - name: "database-url"
       value: "from-secrets"
-    - name: pokemon-tcg-api-key
+    - name: "jwt-secret"
       value: "from-secrets"
-    - name: openai-api-key
+    - name: "pokemon-tcg-api-key"
+      value: "from-secrets"
+    - name: "openai-api-key"
       value: "from-secrets"
   secrets:
-    - name: DATABASE_URL
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:database-url
-    - name: POKEMON_TCG_API_KEY
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:pokemon-tcg-api-key
-    - name: OPENAI_API_KEY
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:openai-api-key
+    - name: "database-url"
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
+    - name: "jwt-secret"
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
+    - name: "pokemon-tcg-api-key"
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
+    - name: "openai-api-key"
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
