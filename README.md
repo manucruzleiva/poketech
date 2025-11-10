@@ -73,6 +73,83 @@ poketech/
 - Python 3.11+
 - VS Code con extensiones Flutter y Python
 - PostgreSQL (local o acceso a RDS)
+- AWS CLI configurado con credenciales de administrador
+
+### Configuración del Rol IAM para App Runner
+
+Para que App Runner pueda acceder a los servicios de AWS necesarios (RDS, Secrets Manager), necesitas crear un rol IAM con los permisos adecuados:
+
+1. Crear el rol IAM con la siguiente política de confianza:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "build.apprunner.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        },
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "tasks.apprunner.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
+
+2. Crear una política de permisos con los siguientes permisos:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+            ],
+            "Resource": [
+                "arn:aws:secretsmanager:*:*:secret:poketech/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "rds-db:connect"
+            ],
+            "Resource": [
+                "arn:aws:rds-db:*:*:dbuser:*/apprunner"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+3. Comandos AWS CLI para crear el rol:
+```bash
+# Crear el rol
+aws iam create-role --role-name PokeTechAppRunnerRole --assume-role-policy-document file://trust-policy.json
+
+# Crear la política
+aws iam create-policy --policy-name PokeTechAppRunnerPolicy --policy-document file://permissions-policy.json
+
+# Asociar la política al rol
+aws iam attach-role-policy --role-name PokeTechAppRunnerRole --policy-arn arn:aws:iam::<TU-CUENTA-ID>:policy/PokeTechAppRunnerPolicy
+```
 
 ### Configuración Frontend
 ```bash

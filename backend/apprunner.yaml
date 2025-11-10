@@ -17,10 +17,14 @@ run:
       value: "from-secrets"
     - name: openai-api-key
       value: "from-secrets"
+    - name: jwt-secret
+      value: "from-secrets"
   secrets:
     - name: DATABASE_URL
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:database-url
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
     - name: POKEMON_TCG_API_KEY
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:pokemon-tcg-api-key
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
     - name: OPENAI_API_KEY
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:openai-api-key
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
+    - name: JWT_SECRET
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
