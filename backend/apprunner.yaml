@@ -21,10 +21,10 @@ run:
       value: "from-secrets"
   secrets:
     - name: DATABASE_URL
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi:database-url
     - name: POKEMON_TCG_API_KEY
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi:pokemon-tcg-api-key
     - name: OPENAI_API_KEY
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi:openai-api-key
     - name: JWT_SECRET
-      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi:jwt-secret
