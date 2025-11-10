@@ -10,20 +10,20 @@ run:
   network:
     port: 8080
   env:
-    - name: DATABASE_URL
+    - name: "database-url"
       value: "from-secrets"
-    - name: POKEMON_TCG_API_KEY
+    - name: "jwt-secret"
       value: "from-secrets"
-    - name: OPENAI_API_KEY
+    - name: "pokemon-tcg-api-key"
       value: "from-secrets"
-    - name: JWT_SECRET
+    - name: "openai-api-key"
       value: "from-secrets"
   secrets:
-    - name: DATABASE_URL
+    - name: "database-url"
       value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
-    - name: POKEMON_TCG_API_KEY
+    - name: "jwt-secret"
       value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
-    - name: OPENAI_API_KEY
+    - name: "pokemon-tcg-api-key"
       value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
-    - name: JWT_SECRET
+    - name: "openai-api-key"
       value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:poketech-secrets-I5BuRi
