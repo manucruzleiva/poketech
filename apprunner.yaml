@@ -1,56 +1,27 @@
 version: 1.0
-applications:
-  - name: poketech-backend
-    type: python
-    sourcePath: backend
-    env:
-      - name: PORT
-        value: "8080"
-    build:
-      commands:
-        build:
-          - pip install -r requirements.txt
-    run:
-      runtime: python3
-      command: uvicorn app.main:app --host 0.0.0.0 --port 8080
-      network:
-        port: 8080
-      env:
-        - name: database-url
-          value: "from-secrets"
-        - name: pokemon-tcg-api-key
-          value: "from-secrets"
-        - name: openai-api-key
-          value: "from-secrets"
-      secrets:
-        - name: DATABASE_URL
-          value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:database-url
-        - name: POKEMON_TCG_API_KEY
-          value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:pokemon-tcg-api-key
-        - name: OPENAI_API_KEY
-          value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:openai-api-key
+runtime: python3
 
-  - name: poketech-frontend
-    type: nodejs
-    sourcePath: frontend
-    env:
-      - name: PORT
-        value: "80"
+build:
+  commands:
     build:
-      commands:
-        pre-build:
-          - curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-          - apt-get install -y nodejs
-          - npm install -g yarn
-          - git clone https://github.com/flutter/flutter.git /usr/local/flutter
-          - export PATH="$PATH:/usr/local/flutter/bin"
-          - flutter doctor
-          - flutter config --enable-web
-        build:
-          - flutter pub get
-          - flutter build web
-    run:
-      runtime: nginx
-      command: nginx -g "daemon off;"
-      network:
-        port: 80
+      - pip install -r backend/requirements.txt
+
+run:
+  runtime-version: 3.11
+  command: cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8080
+  network:
+    port: 8080
+  env:
+    - name: database-url
+      value: "from-secrets"
+    - name: pokemon-tcg-api-key
+      value: "from-secrets"
+    - name: openai-api-key
+      value: "from-secrets"
+  secrets:
+    - name: DATABASE_URL
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:database-url
+    - name: POKEMON_TCG_API_KEY
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:pokemon-tcg-api-key
+    - name: OPENAI_API_KEY
+      value-from: arn:aws:secretsmanager:us-east-1:386093907404:secret:kubernetes/secrets.yaml-oRk4Ad:openai-api-key
